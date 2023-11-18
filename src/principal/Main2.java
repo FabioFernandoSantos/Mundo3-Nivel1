@@ -41,15 +41,24 @@ public class Main2 {
 
     private static void processarOpcao(int opcao) {
         switch (opcao) {
-            case 1 -> incluir();
-            case 2 -> alterar();
-            case 3 -> excluir();
-            case 4 -> exibirPorId();
-            case 5 -> exibirTodos();
-            case 6 -> salvarDados();
-            case 7 -> recuperarDados();
-            case 0 -> System.out.println("Finalizando...");
-            default -> System.out.println("\n ## Opção inválida! ##");
+            case 1 ->
+                incluir();
+            case 2 ->
+                alterar();
+            case 3 ->
+                excluir();
+            case 4 ->
+                exibirPorId();
+            case 5 ->
+                exibirTodos();
+            case 6 ->
+                salvarDados();
+            case 7 ->
+                recuperarDados();
+            case 0 ->
+                System.out.println("Finalizando...");
+            default ->
+                System.out.println("\n ## Opção inválida! ##");
         }
     }
 
@@ -169,7 +178,7 @@ public class Main2 {
         int tipo = scanner.nextInt();
         scanner.nextLine(); // Limpar buffer do scanner
 
-        System.out.println("Digite o ID da pessoa a ser excluída:");
+        System.out.println("Digite o ID da pessoa a ser excluida:");
         int id = scanner.nextInt();
         scanner.nextLine(); // Limpar buffer do scanner
 
@@ -185,9 +194,9 @@ public class Main2 {
             PessoaJuridica pj = repoJuridica.obter(id);
             if (pj != null) {
                 repoJuridica.excluir(id);
-                System.out.println("\n## Pessoa Jurídica removida com sucesso! ##");
+                System.out.println("\n## Pessoa Juridica removida com sucesso! ##");
             } else {
-                System.out.println("\n## Pessoa Jurídica não encontrada. ##");
+                System.out.println("\n## Pessoa Juridica nao encontrada. ##");
             }
         } else {
             System.out.println("\n## Tipo inválido. ##");
@@ -195,11 +204,55 @@ public class Main2 {
     }
 
     private static void exibirPorId() {
-        // Implementação para exibir uma entidade com base no tipo e ID
+        System.out.println("Exibir dados de Pessoa (1 - Fisica, 2 - Juridica): ");
+        int tipo = scanner.nextInt();
+        scanner.nextLine(); // Limpar buffer do scanner
+
+        System.out.println("Digite o ID da pessoa:");
+        int id = scanner.nextInt();
+        scanner.nextLine(); // Limpar buffer do scanner
+
+        if (tipo == 1) {
+            PessoaFisica pf = repoFisica.obter(id);
+            if (pf != null) {
+                System.out.println("Dados da Pessoa Fisica:");
+                pf.exibir();
+            } else {
+                System.out.println("\n## Pessoa Fisica nao encontrada. ##");
+            }
+        } else if (tipo == 2) {
+            PessoaJuridica pj = repoJuridica.obter(id);
+            if (pj != null) {
+                System.out.println("Dados da Pessoa Juridica:");
+                pj.exibir();
+            } else {
+                System.out.println("\n## Pessoa Jurídica nao encontrada. ##");
+            }
+        } else {
+            System.out.println("\n## Tipo inválido. ##");
+        }
     }
 
     private static void exibirTodos() {
-        // Implementação para exibir todas as entidades de um tipo
+        System.out.println("Exibir todos (1 - Fisica, 2 - Juridica): ");
+        int tipo = scanner.nextInt();
+        scanner.nextLine(); // Limpar buffer do scanner
+
+        if (tipo == 1) {
+            System.out.println("Lista de Todas as Pessoas Fisicas:");
+            for (PessoaFisica pf : repoFisica.obterTodos()) {
+                pf.exibir();
+                System.out.println("---------------------");
+            }
+        } else if (tipo == 2) {
+            System.out.println("Lista de Todas as Pessoas Juridicas:");
+            for (PessoaJuridica pj : repoJuridica.obterTodos()) {
+                pj.exibir();
+                System.out.println("---------------------");
+            }
+        } else {
+            System.out.println("\n## Tipo inválido. ##");
+        }
     }
 
     private static void salvarDados() {
