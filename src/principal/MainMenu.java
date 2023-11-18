@@ -1,6 +1,12 @@
 package principal;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import static java.lang.Integer.parseInt;
+import java.util.List;
 import java.util.Scanner;
 
 import model.entidades.PessoaFisica;
@@ -8,7 +14,7 @@ import model.entidades.PessoaJuridica;
 import model.gerenciadores.PessoaFisicaRepo;
 import model.gerenciadores.PessoaJuridicaRepo;
 
-public class Main2 {
+public class MainMenu {
 
     private static Scanner scanner = new Scanner(System.in);
     private static PessoaFisicaRepo repoFisica = new PessoaFisicaRepo();
@@ -58,7 +64,7 @@ public class Main2 {
             case 0 ->
                 System.out.println("Finalizando...");
             default ->
-                System.out.println("\n ## Opção inválida! ##");
+                System.out.println("\n ## Opção invalida! ##");
         }
     }
 
@@ -102,7 +108,7 @@ public class Main2 {
             repoJuridica.inserir(pj);
             System.out.println("\n## Pessoa Juridica adicionada com sucesso! ##");
         } else {
-            System.out.println("\n## Tipo inválido. ##");
+            System.out.println("\n## Tipo invalido. ##");
         }
     }
 
@@ -176,11 +182,11 @@ public class Main2 {
     private static void excluir() {
         System.out.println("Excluir Pessoa (1 - Fisica, 2 - Juridica): ");
         int tipo = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer do scanner
+        scanner.nextLine();
 
         System.out.println("Digite o ID da pessoa a ser excluida:");
         int id = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer do scanner
+        scanner.nextLine();
 
         if (tipo == 1) {
             PessoaFisica pf = repoFisica.obter(id);
@@ -199,7 +205,7 @@ public class Main2 {
                 System.out.println("\n## Pessoa Juridica nao encontrada. ##");
             }
         } else {
-            System.out.println("\n## Tipo inválido. ##");
+            System.out.println("\n## Tipo invalido. ##");
         }
     }
 
@@ -229,14 +235,14 @@ public class Main2 {
                 System.out.println("\n## Pessoa Jurídica nao encontrada. ##");
             }
         } else {
-            System.out.println("\n## Tipo inválido. ##");
+            System.out.println("\n## Tipo invalido. ##");
         }
     }
 
     private static void exibirTodos() {
         System.out.println("Exibir todos (1 - Fisica, 2 - Juridica): ");
         int tipo = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer do scanner
+        scanner.nextLine();
 
         if (tipo == 1) {
             System.out.println("Lista de Todas as Pessoas Fisicas:");
@@ -251,15 +257,52 @@ public class Main2 {
                 System.out.println("---------------------");
             }
         } else {
-            System.out.println("\n## Tipo inválido. ##");
+            System.out.println("\n## Tipo invalido. ##");
         }
     }
 
     private static void salvarDados() {
-        // Implementação para salvar dados em um arquivo ou banco de dados
+        System.out.println("Digite o prefixo para salvar os arquivos:");
+        String prefixo = scanner.nextLine();
+
+        // Salvando dados de Pessoa Física
+        try (ObjectOutputStream oosFisica = new ObjectOutputStream(new FileOutputStream(prefixo + ".fisica.bin"))) {
+            oosFisica.writeObject(repoFisica.obterTodos());
+            System.out.println("\n## Dados de Pessoas Fisicas salvos com sucesso.");
+        } catch (IOException e) {
+            System.err.println("\n## Erro ao salvar dados de Pessoas Fisicas: " + e.getMessage());
+        }
+
+        // Salvando dados de Pessoa Jurídica
+        try (ObjectOutputStream oosJuridica = new ObjectOutputStream(new FileOutputStream(prefixo + ".juridica.bin"))) {
+            oosJuridica.writeObject(repoJuridica.obterTodos());
+            System.out.println("\n## Dados de Pessoas Juridicas salvos com sucesso. ##");
+        } catch (IOException e) {
+            System.err.println("\n ##Erro ao salvar dados de Pessoas Juridicas: " + e.getMessage());
+        }
     }
 
     private static void recuperarDados() {
-        // Implementação para recuperar dados de um arquivo ou banco de dados
+        System.out.println("Digite o prefixo dos arquivos para recuperacao:");
+        String prefixo = scanner.nextLine();
+
+        // Recuperando dados de Pessoa Física
+        try (ObjectInputStream oisFisica = new ObjectInputStream(new FileInputStream(prefixo + ".fisica.bin"))) {
+            List<PessoaFisica> listaFisica = (List<PessoaFisica>) oisFisica.readObject();
+            repoFisica.setLista(listaFisica);
+            System.out.println("\n##Dados de Pessoas Fisicas recuperados com sucesso. ##");
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("\n## Erro ao recuperar dados de Pessoas Fisicas: " + e.getMessage());
+        }
+
+        // Recuperando dados de Pessoa Jurídica
+        try (ObjectInputStream oisJuridica = new ObjectInputStream(new FileInputStream(prefixo + ".juridica.bin"))) {
+            List<PessoaJuridica> listaJuridica = (List<PessoaJuridica>) oisJuridica.readObject();
+            repoJuridica.setLista(listaJuridica);
+            System.out.println("\n ## Dados de Pessoas Juridicas recuperados com sucesso. ##");
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("\n## Erro ao recuperar dados de Pessoas Juridicas: " + e.getMessage());
+        }
     }
+
 }

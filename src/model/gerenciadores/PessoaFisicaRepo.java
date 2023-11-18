@@ -58,4 +58,8 @@ public class PessoaFisicaRepo {
             pessoasFisicas = (ArrayList<PessoaFisica>) ois.readObject();
         }
     }
+
+    public void setLista(List<PessoaFisica> listaFisica) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
