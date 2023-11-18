@@ -40,7 +40,7 @@ public class PessoaJuridicaRepo {
                 return pj;
             }
         }
-        return null; // Ou você pode optar por lançar uma exceção aqui
+        return null;
     }
 
     public List<PessoaJuridica> obterTodos() {

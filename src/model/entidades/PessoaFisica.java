@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class PessoaFisica extends Pessoa implements Serializable {
 
-    // Campos adicionais
     private String cpf;
     private int idade;
 
@@ -20,16 +19,14 @@ public class PessoaFisica extends Pessoa implements Serializable {
         this.idade = idade;
     }
 
-    // Método exibir() sobrescrito
     @Override
     public void exibir() {
-        // Primeiro chama o método exibir da classe pai
+        // Chama o método exibir da classe pai
         super.exibir();
-        // Em seguida, imprime as informações adicionais
+        // Mostra as informações do objeto
         System.out.println("CPF: " + cpf + ", Idade: " + idade);
     }
 
-    // Getters e Setters
     public String getCpf() {
         return cpf;
     }

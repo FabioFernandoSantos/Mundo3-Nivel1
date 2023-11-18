@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class Pessoa implements Serializable {
 
-    // Campos da classe
     private int id;
     private String nome;
 
@@ -18,12 +17,10 @@ public class Pessoa implements Serializable {
         this.nome = nome;
     }
 
-    // Método para exibir os dados
     public void exibir() {
         System.out.println("ID: " + id + ", Nome: " + nome);
     }
 
-    // Getters e Setters
     public int getId() {
         return id;
     }
